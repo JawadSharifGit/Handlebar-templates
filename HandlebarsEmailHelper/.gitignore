@@ -1,0 +1,73 @@
+# Build artifacts
+bin/
+obj/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.ReSharper*/
+*.DotSettings.user
+.vscode/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.pidb
+*.svclog
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Logs / coverage / test outputs
+*.log
+logs/
+TestResults/
+coverage/
+.coverage
+*.coverage
+*.coveragexml
+
+# Cache / temp
+*.cache
+*.tmp
+*~
+~$*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tooling
+.StyleCop
+.stylecop*
+.editorconfig.user
+
+# Publish outputs
+artifacts/
+wwwroot/dist/
+wwwroot/lib/
+# Frontend (if any)
+node_modules/
+*.map
+
+# EF Core / SQLite local databases
+*.db
+*.db-shm
+*.db-wal
+
+# Secrets / config overrides
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# JetBrains Rider solution metadata
+.idea/.idea.*
+
+# By default, keep swagger files committed. If you generate static clients, ignore them here
+# swagger-generated/
