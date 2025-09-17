@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handlebars Email Template System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dashboard {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.2em;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .card-description {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .status-section {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .status-title {
+            color: #0066cc;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .status-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        
+        .status-label {
+            font-size: 0.8em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-value {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #333;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="logo">📧</div>
+        <h1>Handlebars Email Templates</h1>
+        <p class="subtitle">Professional email template management system</p>
+        
+        <div class="cards-container">
+            <a href="/template-creator.html" class="card">
+                <span class="card-icon">✨</span>
+                <div class="card-title">Create Templates</div>
+                <div class="card-description">
+                    Design and create new email templates with Handlebars syntax, partials, and live preview
+                </div>
+            </a>
+            
+            <a href="/quote-test.html" class="card">
+                <span class="card-icon">🔒</span>
+                <div class="card-title">Test Quote Safety</div>
+                <div class="card-description">
+                    Test HTML quote escaping and security features with various template scenarios
+                </div>
+            </a>
+            
+            <a href="/swagger" class="card">
+                <span class="card-icon">🔧</span>
+                <div class="card-title">API Documentation</div>
+                <div class="card-description">
+                    Explore REST API endpoints for templates, partials, and email rendering
+                </div>
+            </a>
+        </div>
+        
+        <div class="status-section">
+            <div class="status-title">📊 System Status</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-label">Templates</div>
+                    <div class="status-value" id="templateCount">Loading...</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Partials</div>
+                    <div class="status-value" id="partialCount">Loading...</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">API Status</div>
+                    <div class="status-value" id="apiStatus">Checking...</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Last Updated</div>
+                    <div class="status-value" id="lastUpdated">Just now</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🚀 Built with ASP.NET Core & HandlebarsDotNet</p>
+            <p>Ready for production email template management</p>
+        </div>
+    </div>
+
+    <script>
+        // Load system status
+        async function loadSystemStatus() {
+            try {
+                // Check API status and load templates
+                const templatesResponse = await fetch('/api/templates');
+                if (templatesResponse.ok) {
+                    const templates = await templatesResponse.json();
+                    document.getElementById('templateCount').textContent = templates.length;
+                    document.getElementById('apiStatus').textContent = '✅ Online';
+                } else {
+                    document.getElementById('templateCount').textContent = 'Error';
+                    document.getElementById('apiStatus').textContent = '❌ Offline';
+                }
+                
+                // Load partials count
+                const partialsResponse = await fetch('/api/partials');
+                if (partialsResponse.ok) {
+                    const partials = await partialsResponse.json();
+                    document.getElementById('partialCount').textContent = partials.length;
+                } else {
+                    document.getElementById('partialCount').textContent = 'Error';
+                }
+                
+            } catch (error) {
+                document.getElementById('templateCount').textContent = 'Error';
+                document.getElementById('partialCount').textContent = 'Error';
+                document.getElementById('apiStatus').textContent = '❌ Offline';
+            }
+            
+            // Update timestamp
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+        }
+        
+        // Load status on page load
+        document.addEventListener('DOMContentLoaded', loadSystemStatus);
+        
+        // Refresh status every 30 seconds
+        setInterval(loadSystemStatus, 30000);
+    </script>
+</body>
+</html>

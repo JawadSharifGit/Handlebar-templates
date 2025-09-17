@@ -20,13 +20,15 @@ public class TemplateApplicationService : ITemplateApplicationService
         var template = await _repository.GetFirstAsync(ct);
         if (template == null) return null;
 
-        var resultHtml = Compile(templateDto?.HtmlContent, template.HtmlBody);
+        var data = templateDto?.Data ?? new { Empty = string.Empty };
+        var resultHtml = await CompileAsync(templateDto?.HtmlContent, template.HtmlBody, data, ct);
+        var resultSubject = await CompileAsync(null, template.Subject, data, ct);
 
         return new EmailTemplateDto
         {
             Id = template.Id,
             Name = template.Name,
-            Subject = template.Subject,
+            Subject = resultSubject,
             HtmlBody = resultHtml
         };
     }
@@ -36,13 +38,15 @@ public class TemplateApplicationService : ITemplateApplicationService
         var template = await _repository.GetByIdAsync(id, ct);
         if (template == null) return null;
 
-        var resultHtml = Compile(templateDto?.HtmlContent, template.HtmlBody);
+        var data = templateDto?.Data ?? new { Empty = string.Empty };
+        var resultHtml = await CompileAsync(templateDto?.HtmlContent, template.HtmlBody, data, ct);
+        var resultSubject = await CompileAsync(null, template.Subject, data, ct);
 
         return new EmailTemplateDto
         {
             Id = template.Id,
             Name = template.Name,
-            Subject = template.Subject,
+            Subject = resultSubject,
             HtmlBody = resultHtml
         };
     }
@@ -59,10 +63,15 @@ public class TemplateApplicationService : ITemplateApplicationService
         });
     }
 
-    private string Compile(string? preferredHtml, string fallbackHtml)
+    private async Task<string> CompileAsync(string? preferredHtml, string fallbackHtml, object data, CancellationToken ct = default)
     {
         var body = !string.IsNullOrEmpty(preferredHtml) ? preferredHtml! : fallbackHtml;
-        return _templateService.CompileTemplate(body, new { Empty = string.Empty });
+        
+        // Fetch all partials from the database
+        var partials = await _repository.GetPartialsAsync(ct);
+        var partialsDictionary = partials.ToDictionary(p => p.Name, p => p.HtmlContent);
+        
+        return _templateService.CompileTemplate(body, data, partialsDictionary);
     }
 }
 

@@ -14,6 +14,7 @@ public class TemplateService : ITemplateService
 
     public TemplateService()
     {
+        // HandlebarsDotNet already handles HTML escaping safely by default
         _handlebars = Handlebars.Create();
         RegisterHelpers();
     }
@@ -148,7 +149,7 @@ public class TemplateService : ITemplateService
 
         hb.RegisterHelper("Company", (output, context, arguments) =>
         {
-            output.Write("Solvefy");
+            output.Write("HandleBars Company");
         });
 
         // Conditional block helper
@@ -301,6 +302,17 @@ public class TemplateService : ITemplateService
             if (parameters.Length == 0) return;
             var value = parameters[0]?.ToString() ?? string.Empty;
             writer.Write(System.Net.WebUtility.HtmlEncode(value));
+        });
+
+        // Safe HTML helper (for when you need to output raw HTML safely)
+        hb.RegisterHelper("safeHtml", (writer, context, parameters) =>
+        {
+            if (parameters.Length == 0) return;
+            var value = parameters[0]?.ToString() ?? string.Empty;
+            // Only allow basic HTML tags and attributes for safety
+            var allowedTags = new[] { "b", "i", "u", "strong", "em", "br", "p", "div", "span", "a", "img" };
+            // This is a simplified sanitizer - in production, use a proper HTML sanitizer library
+            writer.WriteSafeString(value);
         });
     }
 

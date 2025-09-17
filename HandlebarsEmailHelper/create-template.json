@@ -1,0 +1,5 @@
+{
+  "name": "Test Template",
+  "subject": "Hello {{Name}} from {{Company}}!",
+  "htmlBody": "<!DOCTYPE html><html><body>{{> header}}<div style=\"padding: 20px;\"><h2>Hello {{titleCase Name}}!</h2><p>Welcome to {{Company}}!</p><p>Your email: {{Email}}</p></div>{{> footer}}</body></html>"
+}
