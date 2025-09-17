@@ -74,44 +74,8 @@ public static class SeedData
                           "</div>" +
                           "{{> footer}}" +
                           "</body></html>"
-            },
-            new EmailTemplate
-            {
-                Name = "Invoice",
-                Subject = "Invoice #{{InvoiceNumber}} - {{currency Amount \"en-US\"}}",
-                HtmlBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Invoice</title></head>" +
-                          "<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333;\">" +
-                          "{{> header}}" +
-                          "<div style=\"padding: 30px;\">" +
-                          "<h2>Invoice #{{InvoiceNumber}}</h2>" +
-                          "<p><strong>Bill To:</strong><br>{{Name}}<br>{{Email}}</p>" +
-                          "<p><strong>Invoice Date:</strong> {{formatDate InvoiceDate \"MMM dd, yyyy\" \"en-US\"}}</p>" +
-                          "<p><strong>Amount:</strong> {{currency Amount \"en-US\"}}</p>" +
-                          "{{#gt Amount 1000}}<div style=\"background-color: #d4edda; padding: 15px; border-radius: 5px; margin: 20px 0;\">" +
-                          "<strong>High Value Invoice:</strong> This invoice exceeds $1,000.</div>{{/gt}}" +
-                          "<p>Thank you for your business!</p>" +
-                          "</div>" +
-                          "{{> footer}}" +
-                          "</body></html>"
-            },
-            new EmailTemplate
-            {
-                Name = "Password Reset",
-                Subject = "Reset Your Password - {{Company}}",
-                HtmlBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Password Reset</title></head>" +
-                          "<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333;\">" +
-                          "{{> header}}" +
-                          "<div style=\"padding: 30px;\">" +
-                          "<h2>Password Reset Request</h2>" +
-                          "<p>Hello {{Name}},</p>" +
-                          "<p>We received a request to reset your password for your {{Company}} account.</p>" +
-                          "<p style=\"color: #dc3545;\"><strong>Important:</strong> This link will expire in 24 hours.</p>" +
-                          "<p>If you didn't request this, please ignore this email.</p>" +
-                          "<p>Best regards,<br>The {{Company}} Team</p>" +
-                          "</div>" +
-                          "{{> footer}}" +
-                          "</body></html>"
             }
+            
         };
         
         db.EmailTemplates.AddRange(templates);
