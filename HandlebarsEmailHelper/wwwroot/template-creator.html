@@ -261,7 +261,7 @@
 <body>
     <div class="container">
         <div class="header">
-            
+            <a href="/" class="nav-link">← Back to Dashboard</a>
             <h1>📧 Template Creator</h1>
             <p>Design and create email templates with Handlebars syntax</p>
         </div>
@@ -271,8 +271,9 @@
                 <h4>💡 Handlebars Syntax Examples</h4>
                 <p><strong>Variables:</strong> <code>{{Name}}</code>, <code>{{Email}}</code>, <code>{{Company}}</code></p>
                 <p><strong>Partials:</strong> <code>{{> header}}</code>, <code>{{> footer}}</code>, <code>{{> button}}</code></p>
-                <p><strong>Helpers:</strong> <code>{{titleCase Name}}</code>, <code>{{formatDate Date "MMM dd, yyyy"}}</code></p>
+                <p><strong>Date Helpers:</strong> <code>{{currentDate}}</p>
                 <p><strong>Conditionals:</strong> <code>{{#ifNotEmpty Email}}...{{/ifNotEmpty}}</code></p>
+                <p><strong>Note:</strong> Date field should be in YYYY-MM-DD format (e.g., "2025-09-18") for formatDate helper</p>
             </div>
             
             <form id="templateForm">
@@ -308,8 +309,11 @@
         <p><strong>Your email:</strong> {{Email}}</p>
         {{/ifNotEmpty}}
 
-        <p>You can contact to the HR Department for any query</p>
+        {{#ifNotEmpty currentDate}}
+        <p><strong>Registered Date:</strong> {{currentDate}}</p>
+        {{/ifNotEmpty}}
 
+        <p>You can contact to the HR Department for any query</p>
 
         <div style="text-align: center; margin: 30px 0;">
             <a href="{{url}}" style="background-color: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
@@ -389,7 +393,8 @@
                             Name: "John Doe",
                             Email: "john@example.com",
                             Company: "Acme Corp",
-                            Date: new Date().toISOString(),
+                            Date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+                            RegistrationDate: new Date().toISOString(),
                             url: "https://example.com/welcome"
                         }
                     };
@@ -511,7 +516,8 @@
                     Name: "John Doe",
                     Email: "john@example.com",
                     Company: "Acme Corp",
-                    Date: new Date().toISOString(),
+                    Date: new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+                    RegistrationDate: new Date().toISOString(),
                     url: "https://example.com/welcome"
                 }
             };

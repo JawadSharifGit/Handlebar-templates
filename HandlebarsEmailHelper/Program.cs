@@ -51,11 +51,40 @@ app.UseAuthorization();
 // Map API routes only
 app.MapControllers();
 
+// Add default route to serve dashboard
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/index.html");
+    return Task.CompletedTask;
+});
+
 // Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Handlebars Email Template API v1");
+        c.RoutePrefix = "swagger";
+        c.DocumentTitle = "Handlebars Email Template API";
+        c.HeadContent = @"
+            <style>
+                .topbar { display: none !important; }
+                .swagger-ui .topbar { display: none !important; }
+            </style>
+            <script>
+                window.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(function() {
+                        var topbar = document.querySelector('.topbar');
+                        if (topbar) {
+                            var backLink = document.createElement('div');
+                            backLink.innerHTML = '<a href=""/"" style=""position: fixed; top: 10px; left: 10px; z-index: 9999; background: #667eea; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-size: 14px;"">← Back to Dashboard</a>';
+                            document.body.appendChild(backLink);
+                        }
+                    }, 100);
+                });
+            </script>";
+    });
 }
 
 

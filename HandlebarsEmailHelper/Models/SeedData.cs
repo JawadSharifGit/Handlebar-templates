@@ -50,7 +50,7 @@ public static class SeedData
                              "</div>"
             }
         };
-        
+
         db.Partials.AddRange(partials);
         await db.SaveChangesAsync();
     }
@@ -64,20 +64,22 @@ public static class SeedData
                 Name = "Welcome Email",
                 Subject = "Welcome to {{Company}}, {{Name}}!",
                 HtmlBody = "<!DOCTYPE html><html><head><meta charset=\"utf-8\"><title>Welcome</title></head>" +
-                          "<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333;\">" +
-                          "{{> header}}" +
-                          "<div style=\"padding: 30px;\">" +
-                          "<h2>Welcome {{titleCase Name}}!</h2>" +
-                          "<p>We're excited to have you join {{Company}}. Your account has been successfully created.</p>" +
-                          "{{#ifNotEmpty Email}}<p><strong>Your email:</strong> {{Email}}</p>{{/ifNotEmpty}}" +
-                          "<p>Registration Date: {{formatDate Date \"MMM dd, yyyy\" \"en-US\"}}</p>" +
-                          "</div>" +
-                          "{{> footer}}" +
-                          "</body></html>"
+                           "<body style=\"font-family: Arial, sans-serif; line-height: 1.6; color: #333;\">" +
+                           "{{> header}}" +
+                           "<div style=\"padding: 30px;\">" +
+                           "<h2>Welcome {{titleCase Name}}!</h2>" +
+                           "<p>We're excited to have you onboard at {{Company}}. Your account has been successfully created.</p>" +
+                           "{{#ifNotEmpty Email}}<p><strong>Your email:</strong> {{Email}}</p>{{/ifNotEmpty}}" +
+                           "<p>If you need any assistance, our support team is always here to help.</p>" +
+                           "<p>Your Joining date is {{currentDate}}.</p>" +
+                           "</div>" +
+                           "{{> footer}}" +
+                           "</body></html>"
+
             }
-            
+
         };
-        
+
         db.EmailTemplates.AddRange(templates);
         await db.SaveChangesAsync();
     }

@@ -147,9 +147,19 @@ public class TemplateService : ITemplateService
             output.Write("HandleBars");
         });
 
+        hb.RegisterHelper("Name", (output, context, arguments) =>
+        {
+            output.Write("HandleBar");
+        });
+
         hb.RegisterHelper("Company", (output, context, arguments) =>
         {
             output.Write("HandleBars Company");
+        });
+
+        hb.RegisterHelper("Email", (output, context, arguments) =>
+        {
+            output.Write("handle@Bars.io");
         });
 
         // Conditional block helper

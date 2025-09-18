@@ -60,10 +60,21 @@
         }
         .success { background-color: #d4edda; color: #155724; }
         .error { background-color: #f8d7da; color: #721c24; }
+        .nav-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <a href="/" class="nav-link">← Back to Dashboard</a>
         <h1>🔒 Quote Escaping & HTML Safety Test</h1>
         
         <div class="test-section">
@@ -226,7 +237,6 @@ ${escapeHtml(result.renderedHtmlBody.substring(0, 500))}...
 
 <strong>Analysis:</strong>
 - Quotes properly handled: ${result.renderedHtmlBody.includes('"') ? '✅' : '❌'}
-- HTML attributes preserved: ${result.renderedHtmlBody.includes('style=') ? '✅' : '❌'}
 - Handlebars compiled: ${!result.renderedHtmlBody.includes('{{') ? '✅' : '⚠️'}
                 `;
 
