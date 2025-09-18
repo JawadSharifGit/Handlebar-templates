@@ -261,7 +261,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <a href="/" class="nav-link">← Back to Dashboard</a>
+            
             <h1>📧 Template Creator</h1>
             <p>Design and create email templates with Handlebars syntax</p>
         </div>
@@ -303,15 +303,14 @@
     <div style="padding: 30px;">
         <h2>Hello {{titleCase Name}}!</h2>
         <p>Welcome to {{Company}}! We're excited to have you on board.</p>
-        
+
         {{#ifNotEmpty Email}}
         <p><strong>Your email:</strong> {{Email}}</p>
         {{/ifNotEmpty}}
-        
-        {{#ifNotEmpty Date}}
-        <p><strong>Registration Date:</strong> {{formatDate Date "MMM dd, yyyy"}}</p>
-        {{/ifNotEmpty}}
-        
+
+        <p>You can contact to the HR Department for any query</p>
+
+
         <div style="text-align: center; margin: 30px 0;">
             <a href="{{url}}" style="background-color: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
                 Get Started
