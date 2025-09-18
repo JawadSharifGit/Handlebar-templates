@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Existing Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+        }
+        
+        .nav-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-link:hover {
+            opacity: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .header p {
+            text-align: center;
+            opacity: 0.9;
+            font-size: 1.2em;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 0;
+            min-height: 600px;
+        }
+        
+        .form-section {
+            padding: 40px;
+            border-right: 1px solid #e9ecef;
+        }
+        
+        .sidebar {
+            background: #f8f9fa;
+            padding: 40px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .content-group {
+            position: relative;
+        }
+        
+        .content-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .variable-dropdown {
+            padding: 8px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .variable-dropdown:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .insert-btn {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .insert-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .content-textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        .content-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .sidebar h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+        
+        .template-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .template-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .template-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .template-item.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .template-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .template-subject {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .template-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .template-action-btn {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .edit-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .edit-btn:hover {
+            background: #218838;
+        }
+        
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background: #c82333;
+        }
+        
+        .duplicate-btn {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .duplicate-btn:hover {
+            background: #138496;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .result.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .variables-help {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .variables-help h4 {
+            color: #0066cc;
+            margin-bottom: 15px;
+        }
+        
+        .variable-example {
+            background: rgba(255,255,255,0.8);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+        }
+        
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                border-right: none;
+                border-top: 1px solid #e9ecef;
+            }
+            
+            .form-section {
+                border-right: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="nav-link">← Back to Dashboard</a>
+            <h1>✏️ Modify Existing Template</h1>
+            <p>Create and edit email templates with modern UI and advanced features</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="form-section">
+                <form id="templateForm">
+                    <div class="form-group">
+                        <label for="templateName">Template Name</label>
+                        <input type="text" id="templateName" name="name" placeholder="e.g., Welcome Email, Newsletter, Invoice" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="templateSubject">Email Subject</label>
+                        <input type="text" id="templateSubject" name="subject" placeholder="e.g., Welcome {{Name}}, Your order {{OrderNumber}} is ready" required>
+                    </div>
+
+                    <div class="form-group content-group">
+                        <label for="templateContent">Email Content</label>
+                        <div class="content-toolbar">
+                            <select class="variable-dropdown" id="variableDropdown">
+                                <option value="">Select a variable to insert...</option>
+                                <optgroup label="User Variables">
+                                    <option value="{{Name}}">{{Name}} - User's name</option>
+                                    <option value="{{Email}}">{{Email}} - User's email</option>
+                                    <option value="{{Company}}">{{Company}} - Company name</option>
+                                </optgroup>
+                                <optgroup label="Date Variables">
+                                    <option value="{{currentDate}}">{{currentDate}} - Current date</option>
+                                    <option value="{{formatDate Date &quot;MMM dd, yyyy&quot;}}">{{formatDate Date "MMM dd, yyyy"}} - Formatted date</option>
+                                </optgroup>
+                                <optgroup label="Text Helpers">
+                                    <option value="{{titleCase Name}}">{{titleCase Name}} - Title case text</option>
+                                    <option value="{{uppercase text}}">{{uppercase text}} - Uppercase text</option>
+                                    <option value="{{lowercase text}}">{{lowercase text}} - Lowercase text</option>
+                                </optgroup>
+                                <optgroup label="Conditionals">
+                                    <option value="{{#ifNotEmpty Email}}...{{/ifNotEmpty}}">{{#ifNotEmpty}} - If not empty</option>
+                                    <option value="{{#eq value1 value2}}...{{/eq}}">{{#eq}} - If equal</option>
+                                </optgroup>
+                                <optgroup label="Partials">
+                                    <option value="{{> header}}">{{> header}} - Include header</option>
+                                    <option value="{{> footer}}">{{> footer}} - Include footer</option>
+                                    <option value="{{> button}}">{{> button}} - Include button</option>
+                                </optgroup>
+                            </select>
+                            <button type="button" class="insert-btn" onclick="insertVariable()">Insert</button>
+                        </div>
+                        <textarea id="templateContent" name="content" class="content-textarea" placeholder="Enter your email content here. Use the dropdown above to insert Handlebars variables and helpers. The HTML structure will be automatically wrapped around your content." required>Hello {{titleCase Name}},
+
+Welcome to {{Company}}! We're excited to have you on board.
+
+{{#ifNotEmpty Email}}
+Your registered email: {{Email}}
+{{/ifNotEmpty}}
+
+Registration Date: {{formatDate Date "MMM dd, yyyy"}}
+
+Best regards,
+The {{Company}} Team</textarea>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span>✨</span> Create Template
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                            <span>🗑️</span> Clear Form
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="loadTemplates()" id="refreshBtn">
+                            <span>🔄</span> Refresh
+                        </button>
+                    </div>
+                </form>
+
+                <div id="result" class="result"></div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="variables-help">
+                    <h4>💡 Quick Reference</h4>
+                    <div class="variable-example">{{Name}} - User's name</div>
+                    <div class="variable-example">{{Email}} - User's email</div>
+                    <div class="variable-example">{{Company}} - Company name</div>
+                    <div class="variable-example">{{currentDate}} - Today's date</div>
+                    <div class="variable-example">{{#ifNotEmpty value}}...{{/ifNotEmpty}}</div>
+                </div>
+                
+                <h3>📋 Existing Templates</h3>
+                <div id="templatesList" class="template-list">
+                    <div class="loading">Loading templates...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let currentEditingId = null;
+        let templates = [];
+
+        // Load templates on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTemplates();
+        });
+
+        // Handle form submission
+        document.getElementById('templateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const content = (formData.get('content') || '').toString();
+            
+            // Wrap content in HTML structure
+            const processedContent = content
+                .replace(/<\/script/gi, '<\\/script')
+                .replace(/\n/g, '<br>\n        ');
+            const htmlBody = '<!DOCTYPE html>\n' +
+                '<html>\n' +
+                '<head>\n' +
+                '    <meta charset="utf-8">\n' +
+                '    <title>{{Subject}}</title>\n' +
+                '</head>\n' +
+                '<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">\n' +
+                '    {{> header}}\n' +
+                '    \n' +
+                '    <div style="padding: 30px; background: #ffffff;">\n' +
+                '        ' + processedContent + '\n' +
+                '    </div>\n' +
+                '    \n' +
+                '    {{> footer}}\n' ;
+
+            const templateData = {
+                name: formData.get('name'),
+                subject: formData.get('subject'),
+                htmlBody: htmlBody
+            };
+
+            const submitButton = document.getElementById('submitBtn');
+            const result = document.getElementById('result');
+            
+            // Show loading state
+            submitButton.disabled = true;
+            const isEditing = currentEditingId !== null;
+            submitButton.innerHTML = isEditing ? '⏳ Updating Template...' : '⏳ Creating Template...';
+            result.style.display = 'none';
+
+            try {
+                let response;
+                if (isEditing) {
+                    // Update existing template
+                    response = await fetch(`${API_BASE}/templates/${currentEditingId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(templateData)
+                    });
+                } else {
+                    // Create new template
+                    response = await fetch(`${API_BASE}/templates`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(templateData)
+                    });
+                }
+
+                if (response.ok) {
+                    let createdTemplate = null;
+                    if (!isEditing) {
+                        createdTemplate = await response.json();
+                    }
+                    
+                    // Show success message
+                    result.className = 'result success';
+                    result.style.display = 'block';
+                    let successHtml = '';
+                    successHtml += '<strong>✅ Template ' + (isEditing ? 'Updated' : 'Created') + ' Successfully!</strong>';
+                    successHtml += '<br><br>';
+                    successHtml += '<strong>Name:</strong> ' + escapeHtml(templateData.name);
+                    if (createdTemplate) {
+                        successHtml += '<br><strong>ID:</strong> ' + createdTemplate.id;
+                    }
+                    result.innerHTML = successHtml;
+                    
+                    // Clear form and reload templates
+                    clearForm();
+                    loadTemplates();
+                    
+                } else {
+                    const errorText = await response.text();
+                    let errorMessage = `Failed to ${isEditing ? 'update' : 'create'} template`;
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        errorMessage = errorJson.error || errorJson.message || errorMessage;
+                    } catch (e) {
+                        errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+                    }
+                    throw new Error(errorMessage);
+                }
+            } catch (error) {
+                result.className = 'result error';
+                result.style.display = 'block';
+                result.innerHTML = '<strong>❌ Error:</strong> ' + escapeHtml(error.message);
+            } finally {
+                // Reset button
+                submitButton.disabled = false;
+                submitButton.innerHTML = isEditing ? '<span>💾</span> Update Template' : '<span>✨</span> Create Template';
+            }
+        });
+
+        // Insert variable into textarea
+        function insertVariable() {
+            const dropdown = document.getElementById('variableDropdown');
+            const textarea = document.getElementById('templateContent');
+            const variable = dropdown.value;
+            
+            if (variable) {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const text = textarea.value;
+                
+                textarea.value = text.substring(0, start) + variable + text.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start + variable.length, start + variable.length);
+                
+                dropdown.value = '';
+            }
+        }
+
+        // Clear form
+        function clearForm() {
+            document.getElementById('templateForm').reset();
+            currentEditingId = null;
+            document.getElementById('submitBtn').innerHTML = '<span>✨</span> Create Template';
+            document.getElementById('result').style.display = 'none';
+            
+            // Remove active state from all template items
+            document.querySelectorAll('.template-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+
+        // Load and display templates
+        async function loadTemplates() {
+            const templatesList = document.getElementById('templatesList');
+            
+            try {
+                templatesList.innerHTML = '<div class="loading">Loading templates...</div>';
+                
+                const response = await fetch(`${API_BASE}/templates`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                templates = await response.json();
+                
+                if (templates.length === 0) {
+                    templatesList.innerHTML = '' +
+                        '<div class="empty-state">' +
+                        '  <div class="icon">📝</div>' +
+                        '  <p>No templates found. Create your first template!</p>' +
+                        '</div>';
+                    return;
+                }
+
+                function buildTemplateItem(t) {
+                    let html = '';
+                    html += '<div class="template-item" data-id="' + t.id + '">';
+                    html += '  <div class="template-name">' + escapeHtml(t.name) + '</div>';
+                    html += '  <div class="template-subject">' + escapeHtml(t.subject) + '</div>';
+                    html += '  <div class="template-actions">';
+                    html += '    <button class="template-action-btn edit-btn" onclick="editTemplate(' + t.id + ')">✏️ Edit</button>';
+                    html += '    <button class="template-action-btn duplicate-btn" onclick="duplicateTemplate(' + t.id + ')">📋 Copy</button>';
+                    html += '    <button class="template-action-btn delete-btn" onclick="deleteTemplate(' + t.id + ')">🗑️ Delete</button>';
+                    html += '  </div>';
+                    html += '</div>';
+                    return html;
+                }
+
+                templatesList.innerHTML = templates.map(buildTemplateItem).join('');
+            } catch (error) {
+                templatesList.innerHTML = '' +
+                    '<div class="empty-state">' +
+                    '  <div class="icon">⚠️</div>' +
+                    '  <p style="color: #dc3545;">Error loading templates: ' + escapeHtml(error.message) + '</p>' +
+                    '</div>';
+            }
+        }
+
+        // Edit template
+        async function editTemplate(templateId) {
+            try {
+                const response = await fetch(`${API_BASE}/templates/${templateId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to load template');
+                }
+                
+                const template = await response.json();
+                
+                // Extract content from HTML body (remove wrapper)
+                let content = template.htmlBody;
+                const bodyMatch = content.match(/<div style="padding: 30px; background: #ffffff;">\s*([\s\S]*?)\s*<\/div>/);
+                if (bodyMatch) {
+                    content = bodyMatch[1].replace(/<br>\s*/g, '\n        ').trim();
+                }
+                
+                // Populate form
+                document.getElementById('templateName').value = template.name;
+                document.getElementById('templateSubject').value = template.subject;
+                document.getElementById('templateContent').value = content;
+                
+                // Set editing mode
+                currentEditingId = templateId;
+                document.getElementById('submitBtn').innerHTML = '<span>💾</span> Update Template';
+                
+                // Highlight active template
+                document.querySelectorAll('.template-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelector('[data-id="' + templateId + '"]').classList.add('active');
+                
+                // Scroll to form
+                document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Error loading template: ' + error.message);
+            }
+        }
+
+        // Duplicate template
+        async function duplicateTemplate(templateId) {
+            try {
+                const response = await fetch(`${API_BASE}/templates/${templateId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to load template');
+                }
+                
+                const template = await response.json();
+                
+                // Extract content from HTML body
+                let content = template.htmlBody;
+                const bodyMatch = content.match(/<div style="padding: 30px; background: #ffffff;">\s*([\s\S]*?)\s*<\/div>/);
+                if (bodyMatch) {
+                    content = bodyMatch[1].replace(/<br>\s*/g, '\n        ').trim();
+                }
+                
+                // Populate form with duplicated data
+                document.getElementById('templateName').value = template.name + ' (Copy)';
+                document.getElementById('templateSubject').value = template.subject;
+                document.getElementById('templateContent').value = content;
+                
+                // Clear editing mode
+                currentEditingId = null;
+                document.getElementById('submitBtn').innerHTML = '<span>✨</span> Create Template';
+                
+                // Remove active state
+                document.querySelectorAll('.template-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Scroll to form
+                document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                alert('Error duplicating template: ' + error.message);
+            }
+        }
+
+        // Delete template
+        async function deleteTemplate(templateId) {
+            const template = templates.find(t => t.id === templateId);
+            if (!template) return;
+            
+            if (!confirm(`Are you sure you want to delete "${template.name}"? This action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/templates/${templateId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete template');
+                }
+                
+                // If we were editing this template, clear the form
+                if (currentEditingId === templateId) {
+                    clearForm();
+                }
+                
+                // Reload templates
+                loadTemplates();
+                
+                // Show success message
+                const result = document.getElementById('result');
+                result.className = 'result success';
+                result.style.display = 'block';
+                result.innerHTML = `<strong>✅ Template "${escapeHtml(template.name)}" deleted successfully!</strong>`;
+                
+            } catch (error) {
+                alert('Error deleting template: ' + error.message);
+            }
+        }
+
+        // Utility function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text.toString();
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

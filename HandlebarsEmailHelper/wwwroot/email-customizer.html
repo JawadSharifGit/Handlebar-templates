@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-Time Email Customizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            position: relative;
+        }
+        
+        .nav-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-link:hover {
+            opacity: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .header p {
+            text-align: center;
+            opacity: 0.9;
+            font-size: 1.2em;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 0;
+            min-height: 700px;
+        }
+        
+        .control-panel {
+            background: #f8f9fa;
+            padding: 30px;
+            border-right: 1px solid #e9ecef;
+            overflow-y: auto;
+        }
+        
+        .preview-section {
+            padding: 20px;
+            background: #fff;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-group select,
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group select:focus,
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .content-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        .content-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .variable-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: stretch;
+        }
+        
+        .variable-dropdown {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .variable-dropdown:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .insert-btn {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+            white-space: nowrap;
+        }
+        
+        .insert-btn:hover {
+            background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+        
+        .insert-btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .preview-tabs {
+            display: flex;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        
+        .preview-tab {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .preview-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .preview-tab:hover:not(.active) {
+            background: #e9ecef;
+        }
+        
+        .preview-content {
+            display: none;
+        }
+        
+        .preview-content.active {
+            display: block;
+        }
+        
+        .preview-frame {
+            width: 100%;
+            min-height: 500px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .comparison-view {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: 500px;
+        }
+        
+        .comparison-panel {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .comparison-header {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .comparison-content {
+            padding: 15px;
+            height: calc(100% - 45px);
+            overflow-y: auto;
+            background: white;
+        }
+        
+        .instruction-box {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        .instruction-box h4 {
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        
+        .instruction-box p {
+            color: #555;
+            font-size: 13px;
+            margin: 6px 0;
+            font-weight: 500;
+        }
+        
+        .template-info {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .template-info h4 {
+            color: #0066cc;
+            margin-bottom: 8px;
+        }
+        
+        .template-info p {
+            color: #666;
+            font-size: 13px;
+            margin: 4px 0;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .result.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+        }
+        
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-panel {
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .comparison-view {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .comparison-panel {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="nav-link">← Back to Dashboard</a>
+            <h1>🎯 One-Time Email Customizer</h1>
+            <p>Modify any template for a single recipient • Preview both versions • Original stays unchanged</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="control-panel">
+                <div class="instruction-box">
+                    <h4>💡 How It Works</h4>
+                    <p>1. Select any existing template</p>
+                    <p>2. Customize content for one recipient</p>
+                    <p>3. Preview original vs customized</p>
+                    <p>4. Original template stays unchanged</p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="templateSelect">Choose Base Template</label>
+                    <select id="templateSelect" onchange="loadSelectedTemplate()">
+                        <option value="">Choose a template to customize...</option>
+                    </select>
+                </div>
+                
+                <div id="templateInfo" class="template-info" style="display: none;">
+                    <h4>📋 Template Info</h4>
+                    <p><strong>Name:</strong> <span id="templateName"></span></p>
+                    <p><strong>Subject:</strong> <span id="templateSubject"></span></p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customSubject">Custom Subject</label>
+                    <input type="text" id="customSubject" placeholder="Override the template subject for this email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="customContent">Custom Content</label>
+                    <div class="variable-controls">
+                        <select class="variable-dropdown" id="variableDropdown">
+                            <option value="">Insert variable...</option>
+                            <optgroup label="User Variables">
+                                <option value="{{Name}}">{{Name}} - User's name</option>
+                                <option value="{{Email}}">{{Email}} - User's email</option>
+                                <option value="{{Company}}">{{Company}} - Company name</option>
+                            </optgroup>
+                            <optgroup label="Date Variables">
+                                <option value="{{currentDate}}">{{currentDate}} - Current date</option>
+                                <option value="{{formatDate Date &quot;MMM dd, yyyy&quot;}}">{{formatDate Date "MMM dd, yyyy"}} - Formatted date</option>
+                            </optgroup>
+                            <optgroup label="Text Helpers">
+                                <option value="{{titleCase Name}}">{{titleCase Name}} - Title case</option>
+                                <option value="{{uppercase text}}">{{uppercase text}} - Uppercase</option>
+                                <option value="{{lowercase text}}">{{lowercase text}} - Lowercase</option>
+                            </optgroup>
+                            <optgroup label="Conditionals">
+                                <option value="{{#ifNotEmpty Email}}...{{/ifNotEmpty}}">{{#ifNotEmpty}} - If not empty</option>
+                                <option value="{{#eq value1 value2}}...{{/eq}}">{{#eq}} - If equal</option>
+                            </optgroup>
+                            <optgroup label="Partials">
+                                <option value="{{> header}}">{{> header}} - Include header</option>
+                                <option value="{{> footer}}">{{> footer}} - Include footer</option>
+                                <option value="{{> button}}">{{> button}} - Include button</option>
+                            </optgroup>
+                        </select>
+                        <button type="button" class="insert-btn" onclick="insertVariable()">Insert</button>
+                    </div>
+                    <textarea id="customContent" class="content-textarea" placeholder="Enter custom content for this specific email. This will override the template content."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-primary" onclick="generatePreview()" id="previewBtn">
+                        <span>🎯</span> Customize For One Email
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearCustomizations()">
+                        <span>🔄</span> Reset to Original
+                    </button>
+                    <button class="btn btn-success" onclick="saveAsNewTemplate()" id="saveBtn" disabled>
+                        <span>💾</span> Save as New Template
+                    </button>
+                </div>
+                
+                <div id="result" class="result"></div>
+            </div>
+            
+            <div class="preview-section">
+                <div class="preview-tabs">
+                    <button class="preview-tab active" onclick="switchTab('original')">Original Template</button>
+                    <button class="preview-tab" onclick="switchTab('customized')">Customized for single Email</button>
+                    <button class="preview-tab" onclick="switchTab('comparison')">Side-by-Side</button>
+                </div>
+                
+                <div id="originalPreview" class="preview-content active">
+                    <div class="preview-frame" id="originalFrame">
+                        <div class="empty-state">
+                            <div class="icon">📋</div>
+                            <p>Select a template to see the original preview</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="customizedPreview" class="preview-content">
+                    <div class="preview-frame" id="customizedFrame">
+                        <div class="empty-state">
+                            <div class="icon">✨</div>
+                            <p>Make customizations and click "Generate Preview" to see the customized email</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="comparisonPreview" class="preview-content">
+                    <div class="comparison-view">
+                        <div class="comparison-panel">
+                            <div class="comparison-header">📋 Original Template</div>
+                            <div class="comparison-content" id="comparisonOriginal">
+                                <div class="empty-state">
+                                    <div class="icon">📋</div>
+                                    <p>Original template will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comparison-panel">
+                            <div class="comparison-header">✨ Customized Email</div>
+                            <div class="comparison-content" id="comparisonCustomized">
+                                <div class="empty-state">
+                                    <div class="icon">✨</div>
+                                    <p>Customized email will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let templates = [];
+        let selectedTemplate = null;
+        let originalRendered = null;
+        let customizedRendered = null;
+
+        // Load templates on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTemplates();
+        });
+
+        // Load templates for dropdown
+        async function loadTemplates() {
+            try {
+                const response = await fetch(API_BASE + '/templates');
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+                }
+                
+                templates = await response.json();
+                
+                const select = document.getElementById('templateSelect');
+                select.innerHTML = '<option value="">Choose a template to customize...</option>';
+                
+                templates.forEach(template => {
+                    const option = document.createElement('option');
+                    option.value = template.id;
+                    option.textContent = template.name;
+                    select.appendChild(option);
+                });
+                
+            } catch (error) {
+                showResult('error', 'Error loading templates: ' + error.message);
+            }
+        }
+
+        // Load selected template
+        async function loadSelectedTemplate() {
+            const select = document.getElementById('templateSelect');
+            const templateId = select.value;
+            
+            if (!templateId) {
+                selectedTemplate = null;
+                document.getElementById('templateInfo').style.display = 'none';
+                clearPreviews();
+                return;
+            }
+            
+            try {
+                const response = await fetch(API_BASE + '/templates/' + templateId);
+                if (!response.ok) {
+                    throw new Error('Failed to load template');
+                }
+                
+                selectedTemplate = await response.json();
+                
+                // Show template info
+                document.getElementById('templateName').textContent = selectedTemplate.name;
+                document.getElementById('templateSubject').textContent = selectedTemplate.subject;
+                document.getElementById('templateInfo').style.display = 'block';
+                
+                // Load original content into custom fields
+                const content = extractContentFromTemplate(selectedTemplate.htmlBody);
+                document.getElementById('customSubject').value = selectedTemplate.subject;
+                document.getElementById('customContent').value = content;
+                
+                // Generate original preview
+                await generateOriginalPreview();
+                
+            } catch (error) {
+                showResult('error', 'Error loading template: ' + error.message);
+            }
+        }
+
+        // Extract content from HTML template
+        function extractContentFromTemplate(htmlBody) {
+            const bodyMatch = htmlBody.match(/<div style="padding: 30px; background: #ffffff;">\s*([\s\S]*?)\s*<\/div>/);
+            if (bodyMatch) {
+                return bodyMatch[1].replace(/<br>\s*/g, '\n').trim();
+            }
+            return '';
+        }
+
+        // Generate original template preview
+        async function generateOriginalPreview() {
+            if (!selectedTemplate) return;
+            
+            try {
+                const testData = {
+                    data: {
+                        Name: "John Doe",
+                        Email: "john@example.com",
+                        Company: "Acme Corp",
+                        Date: new Date().toISOString().split('T')[0],
+                        RegistrationDate: new Date().toISOString(),
+                        url: "https://example.com/welcome"
+                    }
+                };
+
+                const response = await fetch(API_BASE + '/templates/' + selectedTemplate.id + '/render', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                if (response.ok) {
+                    originalRendered = await response.json();
+                    
+                    document.getElementById('originalFrame').innerHTML = originalRendered.renderedHtmlBody;
+                    document.getElementById('comparisonOriginal').innerHTML = originalRendered.renderedHtmlBody;
+                } else {
+                    throw new Error('Failed to render original template');
+                }
+                
+            } catch (error) {
+                showResult('error', 'Error generating original preview: ' + error.message);
+            }
+        }
+
+        // Generate customized preview
+        async function generatePreview() {
+            if (!selectedTemplate) {
+                showResult('error', 'Please select a template first');
+                return;
+            }
+            
+            const customSubject = document.getElementById('customSubject').value;
+            const customContent = document.getElementById('customContent').value;
+            
+            if (!customContent.trim()) {
+                showResult('error', 'Please enter custom content');
+                return;
+            }
+            
+            const previewBtn = document.getElementById('previewBtn');
+            previewBtn.disabled = true;
+            previewBtn.innerHTML = '<span>⏳</span> Customizing...';
+            
+            try {
+                // Create custom HTML body
+                const processedContent = customContent.replace(/\n/g, '<br>\n        ');
+                const customHtmlBody = '<!DOCTYPE html>\n' +
+                    '<html>\n' +
+                    '<head>\n' +
+                    '    <meta charset="utf-8">\n' +
+                    '    <title>' + (customSubject || selectedTemplate.subject) + '</title>\n' +
+                    '</head>\n' +
+                    '<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">\n' +
+                    '    {{> header}}\n' +
+                    '    \n' +
+                    '    <div style="padding: 30px; background: #ffffff;">\n' +
+                    '        ' + processedContent + '\n' +
+                    '    </div>\n' +
+                    '    \n' +
+                    '    {{> footer}}\n';
+
+                // Create temporary template for rendering
+                const tempTemplate = {
+                    name: selectedTemplate.name + ' (Custom)',
+                    subject: customSubject || selectedTemplate.subject,
+                    htmlBody: customHtmlBody
+                };
+
+                // Create temporary template via API
+                const createResponse = await fetch(API_BASE + '/templates', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(tempTemplate)
+                });
+
+                if (!createResponse.ok) {
+                    throw new Error('Failed to create temporary template');
+                }
+
+                const createdTemplate = await createResponse.json();
+
+                // Render the temporary template
+                const testData = {
+                    data: {
+                        Name: "John Doe",
+                        Email: "john@example.com",
+                        Company: "Acme Corp",
+                        Date: new Date().toISOString().split('T')[0],
+                        RegistrationDate: new Date().toISOString(),
+                        url: "https://example.com/welcome"
+                    }
+                };
+
+                const renderResponse = await fetch(API_BASE + '/templates/' + createdTemplate.id + '/render', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+
+                if (renderResponse.ok) {
+                    customizedRendered = await renderResponse.json();
+                    
+                    document.getElementById('customizedFrame').innerHTML = customizedRendered.renderedHtmlBody;
+                    document.getElementById('comparisonCustomized').innerHTML = customizedRendered.renderedHtmlBody;
+                    
+                    document.getElementById('saveBtn').disabled = false;
+                    showResult('success', 'Preview generated successfully! You can now save this as a new template if desired.');
+                } else {
+                    throw new Error('Failed to render customized template');
+                }
+
+                // Clean up temporary template
+                await fetch(API_BASE + '/templates/' + createdTemplate.id, {
+                    method: 'DELETE'
+                });
+
+            } catch (error) {
+                showResult('error', 'Error generating preview: ' + error.message);
+            } finally {
+                previewBtn.disabled = false;
+                previewBtn.innerHTML = '<span>🎯</span> Customize For One Email';
+            }
+        }
+
+        // Insert variable into textarea
+        function insertVariable() {
+            const dropdown = document.getElementById('variableDropdown');
+            const textarea = document.getElementById('customContent');
+            const variable = dropdown.value;
+            
+            if (variable) {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const text = textarea.value;
+                
+                textarea.value = text.substring(0, start) + variable + text.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start + variable.length, start + variable.length);
+                
+                dropdown.value = '';
+            }
+        }
+
+        // Save customized version as new template
+        async function saveAsNewTemplate() {
+            if (!selectedTemplate || !customizedRendered) {
+                showResult('error', 'Please generate a preview first');
+                return;
+            }
+            
+            const customSubject = document.getElementById('customSubject').value;
+            const customContent = document.getElementById('customContent').value;
+            
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span>⏳</span> Saving...';
+            
+            try {
+                const processedContent = customContent.replace(/\n/g, '<br>\n        ');
+                const customHtmlBody = '<!DOCTYPE html>\n' +
+                    '<html>\n' +
+                    '<head>\n' +
+                    '    <meta charset="utf-8">\n' +
+                    '    <title>' + (customSubject || selectedTemplate.subject) + '</title>\n' +
+                    '</head>\n' +
+                    '<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">\n' +
+                    '    {{> header}}\n' +
+                    '    \n' +
+                    '    <div style="padding: 30px; background: #ffffff;">\n' +
+                    '        ' + processedContent + '\n' +
+                    '    </div>\n' +
+                    '    \n' +
+                    '    {{> footer}}\n';
+
+                const newTemplate = {
+                    name: selectedTemplate.name + ' (Custom - ' + new Date().toLocaleDateString() + ')',
+                    subject: customSubject || selectedTemplate.subject,
+                    htmlBody: customHtmlBody
+                };
+
+                const response = await fetch(API_BASE + '/templates', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newTemplate)
+                });
+
+                if (response.ok) {
+                    const savedTemplate = await response.json();
+                    showResult('success', 'Template saved successfully as "' + savedTemplate.name + '" (ID: ' + savedTemplate.id + ')');
+                    loadTemplates(); // Refresh template list
+                } else {
+                    throw new Error('Failed to save template');
+                }
+
+            } catch (error) {
+                showResult('error', 'Error saving template: ' + error.message);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<span>💾</span> Save as New Template';
+            }
+        }
+
+        // Clear customizations
+        function clearCustomizations() {
+            if (selectedTemplate) {
+                const content = extractContentFromTemplate(selectedTemplate.htmlBody);
+                document.getElementById('customSubject').value = selectedTemplate.subject;
+                document.getElementById('customContent').value = content;
+            } else {
+                document.getElementById('customSubject').value = '';
+                document.getElementById('customContent').value = '';
+            }
+            
+            document.getElementById('saveBtn').disabled = true;
+            clearCustomizedPreviews();
+        }
+
+        // Clear all previews
+        function clearPreviews() {
+            document.getElementById('originalFrame').innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>Select a template to see the original preview</p></div>';
+            clearCustomizedPreviews();
+        }
+
+        // Clear customized previews only
+        function clearCustomizedPreviews() {
+            document.getElementById('customizedFrame').innerHTML = '<div class="empty-state"><div class="icon">✨</div><p>Make customizations and click "Generate Preview" to see the customized email</p></div>';
+            document.getElementById('comparisonCustomized').innerHTML = '<div class="empty-state"><div class="icon">✨</div><p>Customized email will appear here</p></div>';
+        }
+
+        // Switch preview tabs
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.preview-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update content
+            document.querySelectorAll('.preview-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            if (tabName === 'original') {
+                document.getElementById('originalPreview').classList.add('active');
+            } else if (tabName === 'customized') {
+                document.getElementById('customizedPreview').classList.add('active');
+            } else if (tabName === 'comparison') {
+                document.getElementById('comparisonPreview').classList.add('active');
+            }
+        }
+
+        // Show result message
+        function showResult(type, message) {
+            const result = document.getElementById('result');
+            result.className = 'result ' + type;
+            result.style.display = 'block';
+            result.innerHTML = '<strong>' + (type === 'success' ? '✅' : '❌') + '</strong> ' + message;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                result.style.display = 'none';
+            }, 5000);
+        }
+
+        // Utility function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text.toString();
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
